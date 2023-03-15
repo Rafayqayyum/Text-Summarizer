@@ -20,17 +20,16 @@ def take_input(file,text):
         st.error("Please upload a file or paste the text, not both.")
         return False,0
     elif file is not None:
-        success=False
         if file.name.endswith('.docx'):
             success,text=read_docx(convert_to_file(file))
-        if not success:
-            st.error("Error reading file")
-            return False,0
+            if not success:
+                st.error("Error reading file")
+                return False,0
         elif file.name.endswith('.pdf'):
             success,text=read_pdf(convert_to_file(file))
-        if not success:
-            st.error("Error reading file")
-            return False,0
+            if not success:
+                st.error("Error reading file")
+                return False,0
         return True,text
     elif text!="" and text!=" " and text!=None:
         return True,text
