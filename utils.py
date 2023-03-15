@@ -3,26 +3,32 @@ import docx
 import PyPDF2
 import os
 max_words=2000
-openai.api_key = os.getenv('OPENAI_API_KEY')
+max_response=400
+openai.api_key = os.environ.get('OPENAI_API_KEY')
+
+#function to generate summary
 def generate_summary(prompt):
-  tokens_discarded=0
   words=prompt.split()
-  if len(words)>max_words:
-    prompt = " ".join(words[:max_words])
-    tokens_discarded=len(words)-max_words
+  prompt = " ".join(words[:max_words])
+  tokens_discarded=len(words)-max_words
+  if tokens_discarded<0:
+    tokens_discarded=0
+  ffile=open('prompt.txt','w')
+  ffile.write(prompt)
   try:
     response = openai.Completion.create(
       model="text-davinci-003",
-      prompt=f"Summarize : {prompt}",
+      prompt=f"{prompt} tl;dr:",
       temperature=0.91,
-      max_tokens=400,
+      max_tokens=max_response,
       top_p=1.0,
-      frequency_penalty=0.2,
-      presence_penalty=0.2)
+      frequency_penalty=0.1,
+      presence_penalty=0.1)
   except:
     return False,0,0
   return True,response.choices[0].text.strip(),tokens_discarded
 
+#function to read docx file
 def read_docx(filename):
   try:
     doc = docx.Document(filename)
@@ -33,6 +39,7 @@ def read_docx(filename):
   except:
     return False,0
 
+# function to save docx file
 def save_docx(text,filename):
   document = docx.Document()
   document.add_heading("Summary")
@@ -44,6 +51,7 @@ def save_docx(text,filename):
   except:
     return False
 
+# function to read pdf file
 def read_pdf(filename):
   try:
     pdf = open(filename, 'rb')
