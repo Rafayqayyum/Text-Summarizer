@@ -46,7 +46,7 @@ with st.sidebar:
 with st.container():
     # add status text
     st.title("Text Summarizer")
-    st.subheader("You can either upload a docx or pdf file or paste the text in the text area below.")
+    st.subheader("You can either upload a Docx, Pdf file or paste the text in the text area below.")
     # take input
     file = st.file_uploader("Upload a docx or pdf file",type=['docx','pdf'],accept_multiple_files=False)
     text = st.text_area("Paste the text here",height=400,key='inputText')
