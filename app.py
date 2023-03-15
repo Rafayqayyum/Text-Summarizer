@@ -41,7 +41,7 @@ with st.sidebar:
     st.write("I am a software engineer and a ML enthusiast. I am passionate about building products and solving problems.")
     st.write("Find me on [Github](https://github.com/rafayqayyum) and [LinkedIn](https://www.linkedin.com/in/rafayqayyum/)")
     st.write("This is a simple text summarizer app built using [OpenAI](https://openai.com/) and [Streamlit](https://streamlit.io/).")
-    st.write("You can find the source code [here]()")
+    st.write("You can find the source code [here](https://github.com/Rafayqayyum/Text-Summarizer)")
 
 with st.container():
     # add status text
