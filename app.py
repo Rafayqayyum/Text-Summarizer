@@ -30,6 +30,9 @@ def take_input(file,text):
             if not success:
                 st.error("Error reading file")
                 return False,0
+        if len(text.split()) < 10:
+            st.error("The Format of the file is not supported or file is empty")
+            return False, 0
         return True,text
     elif text!="" and text!=" " and text!=None:
         return True,text
@@ -52,9 +55,10 @@ with st.container():
     # add status text
     st.title("Text Summarizer")
     st.subheader("You can either upload a Docx, Pdf file or paste the text in the text area below.")
+    st.write("Only the first 2500 words will be summarized.")
     # take input
     file = st.file_uploader("Upload a docx or pdf file",type=['docx','pdf'],accept_multiple_files=False)
-    text = st.text_area("Paste the text here",height=400,key='inputText')
+    text = st.text_area("Paste the text here",height=320,key='inputText')
     # take input
     status,read_input=take_input(file,text)
     random_filename = get_random_filename()
@@ -75,7 +79,7 @@ with st.container():
                 progress_bar.progress(100)
                 st.success(f"Summary generated successfully. {tokens_discarded} tokens discarded.")
                 # show summary
-                st.text_area("Summary",summary,height=200,disabled=True,max_chars=max_response)
+                st.text_area("Summary",summary,height=200,disabled=True)
                 file=open(random_filename,'rb')
                 # download summary
                 if st.download_button(label="Download Summary", data=file, file_name=random_filename, mime='docx'):
