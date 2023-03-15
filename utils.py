@@ -2,19 +2,20 @@ import openai
 import docx
 import PyPDF2
 import os
-max_words=2000
-max_response=400
+max_words=2500
+max_response=500
 openai.api_key = os.environ.get('OPENAI_API_KEY')
 
 #function to generate summary
 def generate_summary(prompt):
+  prompt = prompt.encode(
+    'utf-8', errors='ignore'
+  ).decode('utf-8')
   words=prompt.split()
   prompt = " ".join(words[:max_words])
   tokens_discarded=len(words)-max_words
   if tokens_discarded<0:
     tokens_discarded=0
-  ffile=open('prompt.txt','w')
-  ffile.write(prompt)
   try:
     response = openai.Completion.create(
       model="text-davinci-003",
