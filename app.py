@@ -1,5 +1,6 @@
 import streamlit as st
 from utils import read_pdf,read_docx,save_docx,generate_summary, max_response
+import random
 st.set_page_config(page_title="Text Summarizer",page_icon='assets/logo.png',layout='wide')
 
 # convert ByteIO to file
@@ -7,6 +8,10 @@ def convert_to_file(file):
     with open(file.name, "wb") as f:
         f.write(file.getbuffer())
     return file.name
+
+# function to create a random file name
+def get_random_filename():
+    return "".join([chr(random.randint(97,122)) for i in range(7)])+".docx"
 
 # create a function to take and process input
 def take_input(file,text):
@@ -52,6 +57,7 @@ with st.container():
     text = st.text_area("Paste the text here",height=400,key='inputText')
     # take input
     status,read_input=take_input(file,text)
+    random_filename = get_random_filename()
     if status:
         # create show summary text area
         summary = st.empty()
@@ -62,7 +68,7 @@ with st.container():
             progress_bar.progress(50)
             if not status:
                 st.error("Error generating summary")
-            success = save_docx(summary, 'summary.docx')
+            success = save_docx(summary, random_filename)
             if not success:
                 st.error("Error Creating Docx file")
             else:
@@ -70,9 +76,9 @@ with st.container():
                 st.success(f"Summary generated successfully. {tokens_discarded} tokens discarded.")
                 # show summary
                 st.text_area("Summary",summary,height=200,disabled=True,max_chars=max_response)
-                file=open('summary.docx','rb')
+                file=open(random_filename,'rb')
                 # download summary
-                if st.download_button(label="Download Summary", data=file, file_name='summary.docx', mime='docx'):
+                if st.download_button(label="Download Summary", data=file, file_name=random_filename, mime='docx'):
                     st.write('Thanks for downloading!')
                 file.close()
 
