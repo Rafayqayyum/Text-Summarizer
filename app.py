@@ -70,19 +70,20 @@ with st.container():
             progress_bar = st.progress(10)
             status,summary,tokens_discarded=generate_summary(read_input)
             progress_bar.progress(50)
-            if not status:
-                st.error("Error generating summary")
-            success = save_docx(summary, random_filename)
-            if not success:
-                st.error("Error Creating Docx file")
+            if status:
+                success = save_docx(summary, random_filename)
+                if success:
+                    progress_bar.progress(100)
+                    st.success(f"Summary generated successfully. {tokens_discarded} tokens discarded.")
+                    # show summary
+                    st.text_area("Summary",summary,height=200,disabled=True)
+                    file=open(random_filename,'rb')
+                    # download summary
+                    if st.download_button(label="Download Summary", data=file, file_name=random_filename, mime='docx'):
+                        st.write('Thanks for downloading!')
+                    file.close()
+                else:
+                    st.error("Error Creating Docx file")
             else:
                 progress_bar.progress(100)
-                st.success(f"Summary generated successfully. {tokens_discarded} tokens discarded.")
-                # show summary
-                st.text_area("Summary",summary,height=200,disabled=True)
-                file=open(random_filename,'rb')
-                # download summary
-                if st.download_button(label="Download Summary", data=file, file_name=random_filename, mime='docx'):
-                    st.write('Thanks for downloading!')
-                file.close()
-
+                st.error("Error generating summary")
