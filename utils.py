@@ -25,9 +25,13 @@ def generate_summary(prompt,api_key):
       top_p=0.8,
       frequency_penalty=0.1,
       presence_penalty=0.1)
-  except:
-    return False,0,0
-  return True,response.choices[0].text.strip(),tokens_discarded
+    return True,response.choices[0].text.strip(),tokens_discarded
+  # check for openai api key error
+  except openai.APIError as e:
+    return False,'Invalid OpenAI API Key',0
+  except Exception as e:
+    return False, 
+
 
 #function to read docx file
 def read_docx(filename):
