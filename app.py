@@ -88,9 +88,9 @@ with st.container():
                     st.error("Error Creating Docx file")
             else:
                 progress_bar.progress(100)
-                if summary=="Invalid OpenAI API Key":
-                    st.error("Invalid OpenAI API Key")
-                else:
+                if summary==None:
                     st.error("Error generating summary")
+                else:
+                    st.error(summary)   
     elif status and (api_key=="" or api_key==None):
         st.error("Please enter your OpenAI API Key")

@@ -34,7 +34,7 @@ def generate_summary(prompt,api_key):
   except openai.error.RateLimitError as e:
     return False,'OpenAI API Key Rate Limit Reached',0
   except Exception as e:
-    return False,0,0
+    return False,None,0
 
 
 #function to read docx file
