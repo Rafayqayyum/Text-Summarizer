@@ -27,10 +27,14 @@ def generate_summary(prompt,api_key):
       presence_penalty=0.1)
     return True,response.choices[0].text.strip(),tokens_discarded
   # check for openai api key error
-  except openai.APIError as e:
+  except openai.error.AuthenticationError as e:
     return False,'Invalid OpenAI API Key',0
+  except openai.error.PermissionError as e:
+    return False,'Your OpenAI API Key does not have access to this model',0
+  except openai.error.RateLimitError as e:
+    return False,'OpenAI API Key Rate Limit Reached',0
   except Exception as e:
-    return False, 
+    return False,0,0
 
 
 #function to read docx file
