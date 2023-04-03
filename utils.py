@@ -4,10 +4,10 @@ import PyPDF2
 import os
 max_words=2500
 max_response=500
-openai.api_key = os.environ.get('OPENAI_API_KEY')
 
 #function to generate summary
-def generate_summary(prompt):
+def generate_summary(prompt,api_key):
+  openai.api_key = api_key
   prompt = prompt.encode(
     'ascii', errors='ignore'
   ).decode('ascii')
