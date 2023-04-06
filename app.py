@@ -56,21 +56,19 @@ with st.container():
     st.title("Text Summarizer")
     st.subheader("You can either upload a Docx, Pdf file or paste the text in the text area below.")
     st.write("Only the first 2500 words will be summarized.")
-    # take open ai api key
-    api_key = st.text_input("Enter your OpenAI API Key",type='password')
     # take input
     file = st.file_uploader("Upload a docx or pdf file",type=['docx','pdf'],accept_multiple_files=False)
     text = st.text_area("Paste the text here",height=320,key='inputText')
     # take input
     status,read_input=take_input(file,text)
     random_filename = get_random_filename()
-    if status and api_key!="" and api_key!=None:
+    if status:
         # create show summary text area
         summary = st.empty()
         # create a button to generate summary
         if st.button("Generate Summary"):
             progress_bar = st.progress(10)
-            status,summary,tokens_discarded=generate_summary(read_input,api_key)
+            status,summary,tokens_discarded=generate_summary(read_input)
             progress_bar.progress(50)
             if status:
                 success = save_docx(summary, random_filename)
