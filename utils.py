@@ -9,10 +9,10 @@ max_response=500
 def generate_summary(prompt,api_key):
   openai.api_key = api_key
   prompt = prompt.encode(
-    'ascii', errors='ignore'
-  ).decode('ascii')
+    'utf-8', errors='ignore'
+  ).decode('utf-8')
   words=prompt.split()
-  prompt = " ".join(words[:max_words]).strip()
+  prompt = " ".join(words[:max_words])
   tokens_discarded=len(words)-max_words
   if tokens_discarded<0:
     tokens_discarded=0
@@ -22,7 +22,7 @@ def generate_summary(prompt,api_key):
       prompt=f"{prompt} tl;dr:",
       temperature=0.91,
       max_tokens=max_response,
-      top_p=0.8,
+      top_p=1.0,
       frequency_penalty=0.1,
       presence_penalty=0.1)
     return True,response.choices[0].text.strip(),tokens_discarded
