@@ -8,8 +8,8 @@ openai.api_key = os.environ.get('OPENAI_API_KEY')
 #function to generate summary
 def generate_summary(prompt):
   prompt = prompt.encode(
-    'utf-8', errors='ignore'
-  ).decode('utf-8')
+    'ascii', errors='ignore'
+  ).decode('ascii')
   words=prompt.split()
   prompt = " ".join(words[:max_words])
   tokens_discarded=len(words)-max_words
