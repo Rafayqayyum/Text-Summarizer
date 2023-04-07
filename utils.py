@@ -28,8 +28,10 @@ def generate_summary(prompt):
   # check for openai api key error
   except openai.error.AuthenticationError as e:
     return False,'Invalid OpenAI API Key',0
+  # check for access error
   except openai.error.PermissionError as e:
     return False,'Your OpenAI API Key does not have access to this model',0
+  # check for rate limit error
   except openai.error.RateLimitError as e:
     return False,'OpenAI API Key Rate Limit Reached',0
   except Exception as e:
